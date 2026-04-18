@@ -1,0 +1,65 @@
+services:
+  calibre-web-automated:
+    image: crocodilestick/calibre-web-automated:v4.0.6
+    container_name: calibre-web-automated
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/New_York
+      - HARDCOVER_TOKEN=${HARDCOVER_TOKEN:-}
+    volumes:
+      - /srv/homelab/calibre/cwa_config:/config:rw
+      - /srv/homelab/calibre/library:/calibre-library:rw
+      - /srv/homelab/calibre/ingest:/cwa-book-ingest:rw
+    networks:
+      - proxy
+    restart: unless-stopped
+    labels:
+      # Traefik
+      - "traefik.enable=true"
+      - "traefik.http.services.cwa.loadbalancer.server.port=8083"
+      - "traefik.http.routers.cwa.rule=Host(`calibre.homelab`)"
+      - "traefik.http.routers.cwa.service=cwa"
+      - "traefik.http.routers.cwa.entrypoints=websecure"
+      - "traefik.http.routers.cwa.tls=true"
+      # Homepage
+      - "homepage.group=Media"
+      - "homepage.name=Calibre Web"
+      - "homepage.icon=calibre-web.png"
+      - "homepage.href=http://calibre.homelab"
+      - "homepage.description=E-book Library Browser"
+      - "homepage.widget.type=calibreweb"
+      - "homepage.widget.url=http://calibre-web-automated:8083"
+      - 'homepage.widget.fields=["books", "authors"]'
+
+  shelfmark:
+    image: ghcr.io/calibrain/shelfmark:v1.2.1
+    container_name: shelfmark
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/New_York
+    volumes:
+      - /srv/homelab/calibre/shelfmark_config:/config:rw
+      - /srv/homelab/calibre/ingest:/books:rw
+    networks:
+      - proxy
+    restart: unless-stopped
+    labels:
+      # Traefik
+      - "traefik.enable=true"
+      - "traefik.http.services.shelfmark.loadbalancer.server.port=8084"
+      - "traefik.http.routers.shelfmark.rule=Host(`shelfmark.homelab`)"
+      - "traefik.http.routers.shelfmark.service=shelfmark"
+      - "traefik.http.routers.shelfmark.entrypoints=websecure"
+      - "traefik.http.routers.shelfmark.tls=true"
+      # Homepage
+      - "homepage.group=Media"
+      - "homepage.name=Shelfmark"
+      - "homepage.icon=shelfmark.png"
+      - "homepage.href=http://shelfmark.homelab"
+      - "homepage.description=E-book Download Manager"
+
+networks:
+  proxy:
+    external: true

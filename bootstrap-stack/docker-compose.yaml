@@ -1,0 +1,11 @@
+include:
+  - traefik/docker-compose.yaml
+  - pihole/docker-compose.yaml
+  - portainer/docker-compose.yaml
+  - homepage/docker-compose.yaml
+  - glances/docker-compose.yaml
+
+networks:
+  proxy:
+    name: proxy
+    driver: bridge

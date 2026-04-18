@@ -1,0 +1,31 @@
+services:
+  homepage:
+    image: ghcr.io/gethomepage/homepage:v1.12.3
+    container_name: homepage
+    restart: unless-stopped
+    networks:
+      - proxy
+    environment:
+      - HOMEPAGE_ALLOWED_HOSTS=homepage.homelab
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./config:/app/config:rw
+      - ~/.kube:/root/.kube/:ro
+    labels:
+      # Traefik
+      - "traefik.enable=true"
+      - "traefik.http.services.homepage.loadbalancer.server.port=3000"
+      - "traefik.http.routers.homepage.rule=Host(`homepage.homelab`)"
+      - "traefik.http.routers.homepage.service=homepage"
+      - "traefik.http.routers.homepage.entrypoints=websecure"
+      - "traefik.http.routers.homepage.tls=true"
+      # Homepage
+      - "homepage.group=Infrastructure"
+      - "homepage.name=Homepage"
+      - "homepage.icon=homepage.png"
+      - "homepage.href=http://homepage.homelab"
+      - "homepage.description=Dashboard"
+
+networks:
+  proxy:
+    external: true

@@ -1,0 +1,29 @@
+- search:
+      provider: google
+      target: _blank
+
+- openmeteo:
+    units: imperial
+    cache: 5
+
+- glances:
+      url: http://glances.homelab:61208
+      version: 4
+      cpu: true 
+      mem: true
+      cputemp: true
+      unit: imperial
+      uptime: true
+      disk: /rootfs
+      diskUnits: bytes
+      expanded: true
+
+- kubernetes:
+    cluster:
+      show: true
+      cpu: true
+      memory: true
+      showLabel: true
+      label: "Cluster"
+    nodes:
+      show: false
