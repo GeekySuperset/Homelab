@@ -1,0 +1,31 @@
+services:
+  traefik:
+    image: traefik:v3.6.9
+    container_name: traefik
+    restart: unless-stopped
+    networks:
+      - proxy
+    ports:
+      - "80:80"
+      - "443:443"
+      - "10002:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "./ca.crt:/etc/traefik/k8s/ca.crt:ro"
+      - "./token:/etc/traefik/k8s/token:ro"
+      - "./config/traefik.yaml:/etc/traefik/traefik.yml:ro"
+      - "./config/dynamic.yaml:/etc/traefik/dynamic.yml:ro"
+    labels:
+      # Traefik
+      - "traefik.enable=true"
+      - "traefik.http.services.traefik.loadbalancer.server.port=8080"
+      - "traefik.http.routers.dashboard.rule=Host(`traefik.homelab`)"
+      - "traefik.http.routers.dashboard.service=traefik"
+      - "traefik.http.routers.dashboard.entrypoints=websecure"
+      - "traefik.http.routers.dashboard.tls=true"
+      # Homepage
+      - "homepage.group=Infrastructure"
+      - "homepage.name=Traefik"
+      - "homepage.icon=traefik.png"
+      - "homepage.href=https://traefik.homelab"
+      - "homepage.description=Reverse Proxy & Load Balancer"

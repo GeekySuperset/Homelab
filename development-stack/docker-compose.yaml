@@ -1,0 +1,9 @@
+include:
+  - jenkins/docker-compose.yaml
+  - sonarqube/docker-compose.yaml
+  - gitea/docker-compose.yaml
+  - nexus/docker-compose.yaml
+
+networks:
+  proxy:
+    external: true

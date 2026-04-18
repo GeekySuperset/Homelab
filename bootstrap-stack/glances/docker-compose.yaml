@@ -1,0 +1,27 @@
+services:
+  glances:
+    image: nicolargo/glances:4.5.3.2-full
+    container_name: glances
+    restart: unless-stopped
+    pid: host
+    network_mode: host
+    environment:
+      - GLANCES_OPT=-w --disable-webui
+      - TZ=America/New_York
+    volumes:
+      - "/:/rootfs:ro"
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    labels:
+      # Traefik
+      - "traefik.enable=true"
+      - "traefik.http.services.glances.loadbalancer.server.port=61208"
+      - "traefik.http.routers.glances.rule=Host(`glances.homelab`)"
+      - "traefik.http.routers.glances.service=glances"
+      - "traefik.http.routers.glances.entrypoints=websecure"
+      - "traefik.http.routers.glances.tls=true"
+      # Homepage
+      - "homepage.group=Infrastructure"
+      - "homepage.name=Glances"
+      - "homepage.icon=glances.png"
+      - "homepage.href=http://glances.homelab"
+      - "homepage.description=System Monitoring"

@@ -1,0 +1,102 @@
+- name: Home
+  # Optionally, if you only have a single page you can hide the desktop navigation for a cleaner look
+  hide-desktop-navigation: true
+  columns:
+    - size: small
+      widgets:
+        - type: calendar
+          first-day-of-week: monday
+
+        - title: Pi-hole stats
+          type: dns-stats
+          service: pihole-v6
+          allow-insecure: true
+          url: https://pihole/
+          username: admin
+          password: <dummy-value>
+
+        - type: server-stats
+          servers:
+            - type: local
+              name: Local
+
+        - type: twitch-channels
+          channels:
+            - gamesdonequick
+
+    - size: full
+      widgets:
+
+    - size: small
+      widgets:
+        - type: weather
+          location: <dummy-value>
+          units: imperial
+          hour-format: 12h
+
+        - type: docker-containers
+          hide-by-default: false
+          containers:
+            glance:
+              name: Glance
+              url: https://glance.homelab
+              icon: sh:glance
+            glances:
+              name: Glances
+              url: https://glances.homelab
+              icon: sh:glances
+            homepage:
+              name: Homepage
+              url: https://homepage.homelab
+              icon: sh:homepage
+            jenkins:
+              name: Jenkins
+              url: https://jenkins.homelab
+              icon: sh:jenkins
+            sonarqube:
+              name: SonarQube
+              url: https://sonarqube.homelab
+              icon: sh:sonarqube
+              id: sonarqube
+            sonarqube-postgres:
+              name: SonarQube DB
+              parent: sonarqube
+            gitea:
+              name: Gitea
+              url: https://gitea.homelab
+              icon: sh:gitea
+              id: gitea
+            gitea-postgres:
+              name: Gitea DB
+              parent: gitea
+            nexus:
+              name: Nexus
+              url: https://nexus.homelab
+              icon: sh:sonatype-nexus-repository
+            pihole:
+              name: Pi-hole
+              url: https://pihole.homelab
+              icon: sh:pi-hole
+            traefik:
+              name: Traefik
+              url: https://traefik.homelab
+              icon: sh:traefik
+            calibre-web-automated:
+              name: Calibre
+              url: https://calibre.homelab
+              icon: sh:calibre
+            shelfmark:
+              name: Shelfmark
+              url: https://shelfmark.homelab
+              icon: sh:shelfmark
+            portainer:
+              name: Portainer
+              url: https://portainer.homelab
+              icon: sh:portainer
+        - type: bookmarks
+          groups:
+            - title: Kubernetes Services
+              links:
+                - title: ArgoCD
+                  url: https://argocd.homelab
+                  icon: sh:argo-cd

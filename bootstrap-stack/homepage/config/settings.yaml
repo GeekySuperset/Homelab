@@ -1,0 +1,32 @@
+# Homepage Configuration
+title: Homelab Dashboard
+subtitle: Services Management
+logo: https://raw.githubusercontent.com/gethomepage/homepage/main/src/assets/favicon.png
+header: true
+footer: false
+
+# Theme and layout
+theme: dark
+color: slate
+background:
+  image: https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80
+  blur: sm
+  brightness: 50
+
+# Quick links
+quicklinks:
+  - name: Documentation
+    icon: fas fa-book
+    url: https://gethomepage.dev
+  - name: GitHub
+    icon: fab fa-github
+    url: https://github.com/gethomepage/homepage
+  - name: Docker Hub
+    icon: fab fa-docker
+    url: https://hub.docker.com
+
+# System monitoring widgets
+widgets: []
+
+# Service discovery from Docker labels
+services: []
