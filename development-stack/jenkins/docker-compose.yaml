@@ -10,18 +10,17 @@ services:
       - jenkins_home:/var/jenkins_home:rw
     labels:
       # Traefik
-      - "traefik.enable=true"
-      - "traefik.http.services.jenkins.loadbalancer.server.port=8080"
-      - "traefik.http.routers.jenkins.rule=Host(`jenkins.homelab`)"
-      - "traefik.http.routers.jenkins.service=jenkins"
-      - "traefik.http.routers.jenkins.entrypoints=websecure"
-      - "traefik.http.routers.jenkins.tls=true"
+      - traefik.enable=true
+      - traefik.http.services.jenkins.loadbalancer.server.port=8080
+      - traefik.http.routers.jenkins.rule=Host(`jenkins.homelab`)
+      - traefik.http.routers.jenkins.service=jenkins
+      - traefik.http.routers.jenkins.entrypoints=websecure
       # Homepage
-      - "homepage.group=Development"
-      - "homepage.name=Jenkins"
-      - "homepage.icon=jenkins.png"
-      - "homepage.href=http://jenkins.homelab"
-      - "homepage.description=CI/CD Pipeline Server"
+      - homepage.group=Development
+      - homepage.name=Jenkins
+      - homepage.icon=jenkins.png
+      - homepage.href=https://jenkins.homelab
+      - homepage.description=CI/CD Pipeline Server
 
 volumes:
   jenkins_home:

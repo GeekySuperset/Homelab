@@ -3,29 +3,89 @@ services:
     image: traefik:v3.6.9
     container_name: traefik
     restart: unless-stopped
+    depends_on:
+      step-ca:
+        condition: service_healthy
+    networks:
+      proxy:
+        aliases:
+          # Bootstrap Stack
+          - ca.homelab
+          - glances.homelab
+          - homepage.homelab
+          - pihole.homelab
+          - portainer.homelab
+          - traefik.homelab
+          # Development Stack
+          - argocd.homelab
+          - gitea.homelab
+          - jenkins.homelab
+          - nexus.homelab
+          - sonarqube.homelab
+          # Personal Stack
+          - calibre.homelab
+          - glance.homelab
+          - shelfmark.homelab
+    ports:
+      - 80:80
+      - 443:443
+      - 10002:8080
+    environment:
+      - LEGO_CA_CERTIFICATES=/step/certs/root_ca.crt
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./ca.crt:/etc/traefik/k8s/ca.crt:ro
+      - ./token:/etc/traefik/k8s/token:ro
+      - ./config/traefik.yaml:/etc/traefik/traefik.yml:ro
+      - ./config/dynamic.yaml:/etc/traefik/dynamic.yml:ro
+      - step:/step:rw
+    labels:
+      # Traefik
+      - traefik.enable=true
+      - traefik.http.services.traefik.loadbalancer.server.port=8080
+      - traefik.http.routers.dashboard.rule=Host(`traefik.homelab`)
+      - traefik.http.routers.dashboard.service=traefik
+      - traefik.http.routers.dashboard.entrypoints=websecure
+      # Homepage
+      - homepage.group=Infrastructure
+      - homepage.name=Traefik
+      - homepage.icon=traefik.png
+      - homepage.href=https://traefik.homelab
+      - homepage.description=Reverse Proxy & Load Balancer
+
+  step-ca:
+    image: smallstep/step-ca:0.30.2
+    container_name: step-ca
+    restart: unless-stopped
     networks:
       - proxy
     ports:
-      - "80:80"
-      - "443:443"
-      - "10002:8080"
+      - 9000:9000
+    environment:
+      - DOCKER_STEPCA_INIT_NAME=Homelab CA
+      - DOCKER_STEPCA_INIT_DNS_NAMES=step-ca,localhost,ca.homelab
+      - DOCKER_STEPCA_INIT_ADDRESS=:9000
+      - DOCKER_STEPCA_INIT_ACME=true
     volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock:ro"
-      - "./ca.crt:/etc/traefik/k8s/ca.crt:ro"
-      - "./token:/etc/traefik/k8s/token:ro"
-      - "./config/traefik.yaml:/etc/traefik/traefik.yml:ro"
-      - "./config/dynamic.yaml:/etc/traefik/dynamic.yml:ro"
+      - step:/home/step:rw
     labels:
       # Traefik
-      - "traefik.enable=true"
-      - "traefik.http.services.traefik.loadbalancer.server.port=8080"
-      - "traefik.http.routers.dashboard.rule=Host(`traefik.homelab`)"
-      - "traefik.http.routers.dashboard.service=traefik"
-      - "traefik.http.routers.dashboard.entrypoints=websecure"
-      - "traefik.http.routers.dashboard.tls=true"
+      - traefik.enable=true
+      - traefik.http.services.step-ca.loadbalancer.server.port=9000
+      - traefik.http.services.step-ca.loadbalancer.server.scheme=https
+      - traefik.http.services.step-ca.loadbalancer.serversTransport=insecure-skip-verify@file
+      - traefik.http.routers.step-ca.rule=Host(`ca.homelab`)
+      - traefik.http.routers.step-ca.service=step-ca
+      - traefik.http.routers.step-ca.entrypoints=websecure
       # Homepage
-      - "homepage.group=Infrastructure"
-      - "homepage.name=Traefik"
-      - "homepage.icon=traefik.png"
-      - "homepage.href=https://traefik.homelab"
-      - "homepage.description=Reverse Proxy & Load Balancer"
+      - homepage.group=Infrastructure
+      - homepage.name=Step CA
+      - homepage.icon=step-ca.png
+      - homepage.description=Certificate Authority
+
+volumes:
+  step:
+
+networks:
+  proxy:
+    external: true

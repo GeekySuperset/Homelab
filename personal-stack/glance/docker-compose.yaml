@@ -12,18 +12,17 @@ services:
       - /srv/homelab/glance/assets:/app/assets:ro
     labels:
       # Traefik
-      - "traefik.enable=true"
-      - "traefik.http.services.glance.loadbalancer.server.port=8080"
-      - "traefik.http.routers.glance.rule=Host(`glance.homelab`)"
-      - "traefik.http.routers.glance.service=glance"
-      - "traefik.http.routers.glance.entrypoints=websecure"
-      - "traefik.http.routers.glance.tls=true"
+      - traefik.enable=true
+      - traefik.http.services.glance.loadbalancer.server.port=8080
+      - traefik.http.routers.glance.rule=Host(`glance.homelab`)
+      - traefik.http.routers.glance.service=glance
+      - traefik.http.routers.glance.entrypoints=websecure
       # Homepage
-      - "homepage.group=Infrastructure"
-      - "homepage.name=Glance"
-      - "homepage.icon=glance.png"
-      - "homepage.href=http://glance.homelab"
-      - "homepage.description=Dashboard"
+      - homepage.group=Infrastructure
+      - homepage.name=Glance
+      - homepage.icon=glance.png
+      - homepage.href=https://glance.homelab
+      - homepage.description=Dashboard
 
 networks:
   proxy:

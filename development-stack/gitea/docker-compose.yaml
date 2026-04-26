@@ -27,18 +27,17 @@ services:
       - gitea_data:/data:rw
     labels:
       # Traefik
-      - "traefik.enable=true"
-      - "traefik.http.services.gitea.loadbalancer.server.port=3000"
-      - "traefik.http.routers.gitea.rule=Host(`gitea.homelab`)"
-      - "traefik.http.routers.gitea.service=gitea"
-      - "traefik.http.routers.gitea.entrypoints=websecure"
-      - "traefik.http.routers.gitea.tls=true"
+      - traefik.enable=true
+      - traefik.http.services.gitea.loadbalancer.server.port=3000
+      - traefik.http.routers.gitea.rule=Host(`gitea.homelab`)
+      - traefik.http.routers.gitea.service=gitea
+      - traefik.http.routers.gitea.entrypoints=websecure
       # Homepage
-      - "homepage.group=Development"
-      - "homepage.name=Gitea"
-      - "homepage.icon=gitea.png"
-      - "homepage.href=https://gitea.homelab"
-      - "homepage.description=Git Repository Manager"
+      - homepage.group=Development
+      - homepage.name=Gitea
+      - homepage.icon=gitea.png
+      - homepage.href=https://gitea.homelab
+      - homepage.description=Git Repository Manager
 
   gitea-postgres:
     image: postgres:14

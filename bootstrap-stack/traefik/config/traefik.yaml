@@ -3,6 +3,12 @@ global:
   checkNewVersion: true
   sendAnonymousUsage: false
 
+log:
+  level: INFO
+  format: common
+
+accessLog: {}
+
 api:
   dashboard: true
   insecure: true
@@ -18,6 +24,9 @@ entrypoints:
           permanent: true
   websecure:
     address: ":443"
+    http:
+      tls:
+        certResolver: stepca
 
 providers:
   # File Provider (For non-containerized host services)
@@ -45,3 +54,13 @@ providers:
     endpoint: "https://<KUBERNETES_HOST>:6443"
     token: "/etc/traefik/k8s/token"
     certAuthFilePath: "/etc/traefik/k8s/ca.crt"
+
+# Certificate Resolvers
+certificatesResolvers:
+  stepca:
+    acme:
+      caServer: "https://step-ca:9000/acme/acme/directory"
+      email: "admin@homelab"
+      storage: "/step/acme.json"
+      httpChallenge:
+        entryPoint: web
