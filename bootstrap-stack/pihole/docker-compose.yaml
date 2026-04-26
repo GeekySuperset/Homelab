@@ -6,51 +6,51 @@ services:
     networks:
       - proxy
     ports:
-      - "53:53/tcp"
-      - "53:53/udp"
-      - "10001:443"
+      - 53:53/tcp
+      - 53:53/udp
+      - 10001:443
     environment:
       TZ: 'America/New_York'
       FTLCONF_webserver_api_password: ${PIHOLE_WEB_PASSWORD}
-      FTLCONF_dns_listeningMode: 'ALL'
+      FTLCONF_dns_listeningMode: ALL
       # Local DNS hosts configuration
       FTLCONF_dns_hosts: |-
-        ${HOMELAB_HOST_IP} argocd.homelab
-        ${HOMELAB_HOST_IP} jenkins.homelab
-        ${HOMELAB_HOST_IP} sonarqube.homelab
-        ${HOMELAB_HOST_IP} pihole.homelab
-        ${HOMELAB_HOST_IP} traefik.homelab
-        ${HOMELAB_HOST_IP} homepage.homelab
-        ${HOMELAB_HOST_IP} glance.homelab
+        ${HOMELAB_HOST_IP} ca.homelab
         ${HOMELAB_HOST_IP} glances.homelab
-        ${HOMELAB_HOST_IP} calibre.homelab
-        ${HOMELAB_HOST_IP} shelfmark.homelab
+        ${HOMELAB_HOST_IP} homepage.homelab
+        ${HOMELAB_HOST_IP} pihole.homelab
         ${HOMELAB_HOST_IP} portainer.homelab
+        ${HOMELAB_HOST_IP} traefik.homelab
+
+        ${HOMELAB_HOST_IP} argocd.homelab
         ${HOMELAB_HOST_IP} gitea.homelab
+        ${HOMELAB_HOST_IP} jenkins.homelab
         ${HOMELAB_HOST_IP} nexus.homelab
+        ${HOMELAB_HOST_IP} sonarqube.homelab
+
+        ${HOMELAB_HOST_IP} calibre.homelab
+        ${HOMELAB_HOST_IP} glance.homelab
+        ${HOMELAB_HOST_IP} shelfmark.homelab
     volumes:
       - ./etc-pihole:/etc/pihole:rw
     labels:
-      # Traefik (TLS at edge; HTTPS to Pi-hole with self-signed cert — verify skipped)
-      - "traefik.enable=true"
-      - "traefik.http.routers.pihole.rule=Host(`pihole.homelab`)"
-      - "traefik.http.routers.pihole.entrypoints=websecure"
-      - "traefik.http.routers.pihole.tls=true"
-      - "traefik.http.routers.pihole.service=pihole"
-      - "traefik.http.routers.pihole.middlewares=pihole-redirectregex"
-      - "traefik.http.middlewares.pihole-redirectregex.redirectregex.regex=^https://pihole.homelab/?$"
-      - "traefik.http.middlewares.pihole-redirectregex.redirectregex.replacement=https://pihole.homelab/admin"
-      - "traefik.http.services.pihole.loadbalancer.server.port=443"
-      - "traefik.http.services.pihole.loadbalancer.server.scheme=https"
-      - "traefik.http.services.pihole.loadbalancer.serversTransport=insecure-skip-verify@file"
+      # Traefik
+      - traefik.enable=true
+      - traefik.http.services.pihole.loadbalancer.server.port=80
+      - traefik.http.routers.pihole.rule=Host(`pihole.homelab`)
+      - traefik.http.routers.pihole.service=pihole
+      - traefik.http.routers.pihole.entrypoints=websecure
+      - traefik.http.routers.pihole.middlewares=pihole-redirectregex
+      - traefik.http.middlewares.pihole-redirectregex.redirectregex.regex=^https://pihole.homelab/?$
+      - traefik.http.middlewares.pihole-redirectregex.redirectregex.replacement=https://pihole.homelab/admin
       # Homepage
-      - "homepage.group=Infrastructure"
-      - "homepage.name=Pi-hole"
-      - "homepage.icon=pi-hole.png"
-      - "homepage.href=https://pihole.homelab"
-      - "homepage.description=DNS Server & Ad Blocker"
-      - "homepage.widget.type=pihole"
-      - "homepage.widget.url=https://pihole"
-      - "homepage.widget.username=pihole"
-      - "homepage.widget.version=6"
-      - "homepage.widget.key=${PIHOLE_WEB_PASSWORD}"
+      - homepage.group=Infrastructure
+      - homepage.name=Pi-hole
+      - homepage.icon=pi-hole.png
+      - homepage.href=https://pihole.homelab
+      - homepage.description=DNS Server & Ad Blocker
+      - homepage.widget.type=pihole
+      - homepage.widget.url=https://pihole
+      - homepage.widget.username=pihole
+      - homepage.widget.version=6
+      - homepage.widget.key=${PIHOLE_WEB_PASSWORD}

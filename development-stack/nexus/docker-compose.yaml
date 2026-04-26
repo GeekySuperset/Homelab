@@ -12,18 +12,17 @@ services:
       - nexus_data:/nexus-data:rw
     labels:
       # Traefik
-      - "traefik.enable=true"
-      - "traefik.http.services.nexus.loadbalancer.server.port=8081"
-      - "traefik.http.routers.nexus.rule=Host(`nexus.homelab`)"
-      - "traefik.http.routers.nexus.service=nexus"
-      - "traefik.http.routers.nexus.entrypoints=websecure"
-      - "traefik.http.routers.nexus.tls=true"
+      - traefik.enable=true
+      - traefik.http.services.nexus.loadbalancer.server.port=8081
+      - traefik.http.routers.nexus.rule=Host(`nexus.homelab`)
+      - traefik.http.routers.nexus.service=nexus
+      - traefik.http.routers.nexus.entrypoints=websecure
       # Homepage
-      - "homepage.group=Development"
-      - "homepage.name=Nexus"
-      - "homepage.icon=nexus.png"
-      - "homepage.href=https://nexus.homelab"
-      - "homepage.description=Repository Manager"
+      - homepage.group=Development
+      - homepage.name=Nexus
+      - homepage.icon=nexus.png
+      - homepage.href=https://nexus.homelab
+      - homepage.description=Repository Manager
 
 volumes:
   nexus_data:

@@ -93,6 +93,10 @@
               name: Portainer
               url: https://portainer.homelab
               icon: sh:portainer
+            step-ca:
+              name: Step CA
+              url: https://ca.homelab
+              icon: sh:smallstep
         - type: bookmarks
           groups:
             - title: Kubernetes Services

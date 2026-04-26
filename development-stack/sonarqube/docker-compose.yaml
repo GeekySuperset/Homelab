@@ -18,18 +18,17 @@ services:
       - sonarqube_extensions:/opt/sonarqube/extensions:rw
     labels:
       # Traefik
-      - "traefik.enable=true"
-      - "traefik.http.services.sonarqube.loadbalancer.server.port=9000"
-      - "traefik.http.routers.sonarqube.rule=Host(`sonarqube.homelab`)"
-      - "traefik.http.routers.sonarqube.service=sonarqube"
-      - "traefik.http.routers.sonarqube.entrypoints=websecure"
-      - "traefik.http.routers.sonarqube.tls=true"
+      - traefik.enable=true
+      - traefik.http.services.sonarqube.loadbalancer.server.port=9000
+      - traefik.http.routers.sonarqube.rule=Host(`sonarqube.homelab`)
+      - traefik.http.routers.sonarqube.service=sonarqube
+      - traefik.http.routers.sonarqube.entrypoints=websecure
       # Homepage
-      - "homepage.group=Development"
-      - "homepage.name=SonarQube"
-      - "homepage.icon=sonarqube.png"
-      - "homepage.href=http://sonarqube.homelab"
-      - "homepage.description=Code Quality Analysis"
+      - homepage.group=Development
+      - homepage.name=SonarQube
+      - homepage.icon=sonarqube.png
+      - homepage.href=https://sonarqube.homelab
+      - homepage.description=Code Quality Analysis
 
   sonarqube-postgres:
     image: postgres:15

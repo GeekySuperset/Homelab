@@ -16,21 +16,20 @@ services:
     restart: unless-stopped
     labels:
       # Traefik
-      - "traefik.enable=true"
-      - "traefik.http.services.cwa.loadbalancer.server.port=8083"
-      - "traefik.http.routers.cwa.rule=Host(`calibre.homelab`)"
-      - "traefik.http.routers.cwa.service=cwa"
-      - "traefik.http.routers.cwa.entrypoints=websecure"
-      - "traefik.http.routers.cwa.tls=true"
+      - traefik.enable=true
+      - traefik.http.services.cwa.loadbalancer.server.port=8083
+      - traefik.http.routers.cwa.rule=Host(`calibre.homelab`)
+      - traefik.http.routers.cwa.service=cwa
+      - traefik.http.routers.cwa.entrypoints=websecure
       # Homepage
-      - "homepage.group=Media"
-      - "homepage.name=Calibre Web"
-      - "homepage.icon=calibre-web.png"
-      - "homepage.href=http://calibre.homelab"
-      - "homepage.description=E-book Library Browser"
-      - "homepage.widget.type=calibreweb"
-      - "homepage.widget.url=http://calibre-web-automated:8083"
-      - 'homepage.widget.fields=["books", "authors"]'
+      - homepage.group=Media
+      - homepage.name=Calibre Web
+      - homepage.icon=calibre-web.png
+      - homepage.href=https://calibre.homelab
+      - homepage.description=E-book Library Browser
+      - homepage.widget.type=calibreweb
+      - homepage.widget.url=http://calibre-web-automated:8083
+      - homepage.widget.fields=["books", "authors"]
 
   shelfmark:
     image: ghcr.io/calibrain/shelfmark:v1.2.1
@@ -47,18 +46,17 @@ services:
     restart: unless-stopped
     labels:
       # Traefik
-      - "traefik.enable=true"
-      - "traefik.http.services.shelfmark.loadbalancer.server.port=8084"
-      - "traefik.http.routers.shelfmark.rule=Host(`shelfmark.homelab`)"
-      - "traefik.http.routers.shelfmark.service=shelfmark"
-      - "traefik.http.routers.shelfmark.entrypoints=websecure"
-      - "traefik.http.routers.shelfmark.tls=true"
+      - traefik.enable=true
+      - traefik.http.services.shelfmark.loadbalancer.server.port=8084
+      - traefik.http.routers.shelfmark.rule=Host(`shelfmark.homelab`)
+      - traefik.http.routers.shelfmark.service=shelfmark
+      - traefik.http.routers.shelfmark.entrypoints=websecure
       # Homepage
-      - "homepage.group=Media"
-      - "homepage.name=Shelfmark"
-      - "homepage.icon=shelfmark.png"
-      - "homepage.href=http://shelfmark.homelab"
-      - "homepage.description=E-book Download Manager"
+      - homepage.group=Media
+      - homepage.name=Shelfmark
+      - homepage.icon=shelfmark.png
+      - homepage.href=https://shelfmark.homelab
+      - homepage.description=E-book Download Manager
 
 networks:
   proxy:

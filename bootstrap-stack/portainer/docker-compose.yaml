@@ -10,21 +10,18 @@ services:
       - portainer_data:/data:rw
       - ~/.kube:/root/.kube:ro
     labels:
-      # Traefik (TLS at edge; HTTPS to Portainer with built-in cert — verify skipped)
-      - "traefik.enable=true"
-      - "traefik.http.routers.portainer.rule=Host(`portainer.homelab`)"
-      - "traefik.http.routers.portainer.entrypoints=websecure"
-      - "traefik.http.routers.portainer.tls=true"
-      - "traefik.http.routers.portainer.service=portainer"
-      - "traefik.http.services.portainer.loadbalancer.server.port=9443"
-      - "traefik.http.services.portainer.loadbalancer.server.scheme=https"
-      - "traefik.http.services.portainer.loadbalancer.serversTransport=insecure-skip-verify@file"
+      # Traefik
+      - traefik.enable=true
+      - traefik.http.services.portainer.loadbalancer.server.port=9000
+      - traefik.http.routers.portainer.rule=Host(`portainer.homelab`)
+      - traefik.http.routers.portainer.service=portainer
+      - traefik.http.routers.portainer.entrypoints=websecure
       # Homepage
-      - "homepage.group=Infrastructure"
-      - "homepage.name=Portainer"
-      - "homepage.icon=portainer.png"
-      - "homepage.href=https://portainer.homelab"
-      - "homepage.description=Container & Kubernetes Management"
+      - homepage.group=Infrastructure
+      - homepage.name=Portainer
+      - homepage.icon=portainer.png
+      - homepage.href=https://portainer.homelab
+      - homepage.description=Container & Kubernetes Management
 
 volumes:
   portainer_data:

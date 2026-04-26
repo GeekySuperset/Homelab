@@ -4,24 +4,27 @@ services:
     container_name: glances
     restart: unless-stopped
     pid: host
-    network_mode: host
+    networks:
+      - proxy
     environment:
       - GLANCES_OPT=-w --disable-webui
       - TZ=America/New_York
     volumes:
-      - "/:/rootfs:ro"
+      - /:/rootfs:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
     labels:
       # Traefik
-      - "traefik.enable=true"
-      - "traefik.http.services.glances.loadbalancer.server.port=61208"
-      - "traefik.http.routers.glances.rule=Host(`glances.homelab`)"
-      - "traefik.http.routers.glances.service=glances"
-      - "traefik.http.routers.glances.entrypoints=websecure"
-      - "traefik.http.routers.glances.tls=true"
+      - traefik.enable=true
+      - traefik.http.services.glances.loadbalancer.server.port=61208
+      - traefik.http.routers.glances.rule=Host(`glances.homelab`)
+      - traefik.http.routers.glances.service=glances
+      - traefik.http.routers.glances.entrypoints=websecure
       # Homepage
-      - "homepage.group=Infrastructure"
-      - "homepage.name=Glances"
-      - "homepage.icon=glances.png"
-      - "homepage.href=http://glances.homelab"
-      - "homepage.description=System Monitoring"
+      - homepage.group=Infrastructure
+      - homepage.name=Glances
+      - homepage.icon=glances.png
+      - homepage.description=System Monitoring
+
+networks:
+  proxy:
+    external: true
