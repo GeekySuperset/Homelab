@@ -1,38 +1,46 @@
 services:
-  calibre-web-automated:
-    image: crocodilestick/calibre-web-automated:v4.0.6
-    container_name: calibre-web-automated
+  calibre:
+    image: linuxserver/calibre:9.14.0
+    container_name: calibre
     environment:
       - PUID=1000
       - PGID=1000
       - TZ=America/New_York
-      - HARDCOVER_TOKEN=${HARDCOVER_TOKEN:-}
     volumes:
-      - /srv/homelab/calibre/cwa_config:/config:rw
-      - /srv/homelab/calibre/library:/calibre-library:rw
-      - /srv/homelab/calibre/ingest:/cwa-book-ingest:rw
+      - /srv/homelab/calibre:/config:rw
     networks:
       - proxy
+    shm_size: "1gb"
     restart: unless-stopped
     labels:
-      # Traefik
+      #Traefik
       - traefik.enable=true
-      - traefik.http.services.cwa.loadbalancer.server.port=8083
-      - traefik.http.routers.cwa.rule=Host(`calibre.homelab`)
-      - traefik.http.routers.cwa.service=cwa
-      - traefik.http.routers.cwa.entrypoints=websecure
+      ## Calibre Web Server
+      - traefik.http.services.calibre.loadbalancer.server.port=8081
+      - traefik.http.routers.calibre.rule=Host(`calibre.homelab`)
+      - traefik.http.routers.calibre.service=calibre
+      - traefik.http.routers.calibre.entrypoints=websecure
+      ## Calibre Desktop GUI
+      - traefik.http.services.calibre-desktop.loadbalancer.server.port=8080
+      - traefik.http.routers.calibre-desktop.rule=Host(`calibre-desktop.homelab`)
+      - traefik.http.routers.calibre-desktop.service=calibre-desktop
+      - traefik.http.routers.calibre-desktop.entrypoints=websecure
       # Homepage
+      ## Calibre Web Server - Moved to services.yaml
+      # - homepage.group=Media
+      # - homepage.name=Calibre
+      # - homepage.icon=calibre.png
+      # - homepage.href=https://calibre.homelab
+      # - homepage.description=E-book Library Web Server
+      # Calibre Desktop
       - homepage.group=Media
-      - homepage.name=Calibre Web
-      - homepage.icon=calibre-web.png
-      - homepage.href=https://calibre.homelab
-      - homepage.description=E-book Library Browser
-      - homepage.widget.type=calibreweb
-      - homepage.widget.url=http://calibre-web-automated:8083
-      - homepage.widget.fields=["books", "authors"]
+      - homepage.name=Calibre Desktop
+      - homepage.icon=calibre.png
+      - homepage.href=https://calibre-desktop.homelab
+      - homepage.description=E-book Library Desktop GUI
 
   shelfmark:
-    image: ghcr.io/calibrain/shelfmark:v1.2.1
+    image: ghcr.io/calibrain/shelfmark:v1.3.15
     container_name: shelfmark
     environment:
       - PUID=1000
@@ -40,7 +48,7 @@ services:
       - TZ=America/New_York
     volumes:
       - /srv/homelab/calibre/shelfmark_config:/config:rw
-      - /srv/homelab/calibre/ingest:/books:rw
+      - /srv/homelab/calibre/downloads:/books:rw
     networks:
       - proxy
     restart: unless-stopped

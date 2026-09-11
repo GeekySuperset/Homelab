@@ -1,0 +1,6 @@
+- Media:
+    - Calibre:
+        icon: calibre.png
+        href: https://calibre.homelab
+        description: E-book Library Web Server
+        weight: 0
