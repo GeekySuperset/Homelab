@@ -81,9 +81,9 @@
               name: Traefik
               url: https://traefik.homelab
               icon: sh:traefik
-            calibre-web-automated:
-              name: Calibre
-              url: https://calibre.homelab
+            calibre:
+              name: Calibre Desktop
+              url: https://calibre-desktop.homelab
               icon: sh:calibre
             shelfmark:
               name: Shelfmark
@@ -104,3 +104,8 @@
                 - title: ArgoCD
                   url: https://argocd.homelab
                   icon: sh:argo-cd
+            - title: Other
+              links:
+                - title: Calibre
+                  url: https://calibre.homelab
+                  icon: sh:calibre

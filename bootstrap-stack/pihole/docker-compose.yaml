@@ -29,6 +29,7 @@ services:
         ${HOMELAB_HOST_IP} sonarqube.homelab
 
         ${HOMELAB_HOST_IP} calibre.homelab
+        ${HOMELAB_HOST_IP} calibre-desktop.homelab
         ${HOMELAB_HOST_IP} glance.homelab
         ${HOMELAB_HOST_IP} shelfmark.homelab
     volumes:

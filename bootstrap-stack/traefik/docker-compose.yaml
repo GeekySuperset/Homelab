@@ -24,6 +24,7 @@ services:
           - sonarqube.homelab
           # Personal Stack
           - calibre.homelab
+          - calibre-desktop.homelab
           - glance.homelab
           - shelfmark.homelab
     ports:
