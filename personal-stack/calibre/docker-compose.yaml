@@ -20,6 +20,8 @@ services:
       - traefik.http.routers.calibre.rule=Host(`calibre.homelab`)
       - traefik.http.routers.calibre.service=calibre
       - traefik.http.routers.calibre.entrypoints=websecure
+      - traefik.http.routers.calibre.middlewares=calibre-auth
+      - traefik.http.middlewares.calibre-auth.headers.customrequestheaders.Authorization=Basic ${CALIBRE_AUTH_BASE64:?CALIBRE_AUTH_BASE64 must be set in .env}
       ## Calibre Desktop GUI
       - traefik.http.services.calibre-desktop.loadbalancer.server.port=8080
       - traefik.http.routers.calibre-desktop.rule=Host(`calibre-desktop.homelab`)
