@@ -25,7 +25,6 @@ services:
           # Personal Stack
           - calibre.homelab
           - calibre-desktop.homelab
-          - glance.homelab
           - shelfmark.homelab
     ports:
       - 80:80

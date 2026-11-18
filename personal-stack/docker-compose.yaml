@@ -1,6 +1,5 @@
 include:
   - calibre/docker-compose.yaml
-  - glance/docker-compose.yaml
 
 networks:
   proxy:

@@ -30,8 +30,7 @@ services:
 
         ${HOMELAB_HOST_IP} calibre.homelab
         ${HOMELAB_HOST_IP} calibre-desktop.homelab
-        ${HOMELAB_HOST_IP} glance.homelab
-        ${HOMELAB_HOST_IP} shelfmark.homelab
+                ${HOMELAB_HOST_IP} shelfmark.homelab
     volumes:
       - ./etc-pihole:/etc/pihole:rw
     labels:
