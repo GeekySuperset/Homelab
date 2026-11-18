@@ -1,0 +1,8 @@
+min_age: 14d
+images:
+  pihole/pihole:
+    versioning: loose
+  nicolargo/glances:
+    versioning: loose
+  library/sonarqube:
+    versioning: loose

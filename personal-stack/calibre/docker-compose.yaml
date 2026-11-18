@@ -1,6 +1,6 @@
 services:
   calibre:
-    image: linuxserver/calibre:9.14.0
+    image: linuxserver/calibre:9.17.0
     container_name: calibre
     environment:
       - PUID=1000
@@ -42,7 +42,7 @@ services:
       - homepage.description=E-book Library Desktop GUI
 
   shelfmark:
-    image: ghcr.io/calibrain/shelfmark:v1.3.15
+    image: ghcr.io/calibrain/shelfmark:v1.6.1
     container_name: shelfmark
     environment:
       - PUID=1000

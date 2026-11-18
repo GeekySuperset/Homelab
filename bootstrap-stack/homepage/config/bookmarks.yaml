@@ -1,0 +1,10 @@
+- Quick Links:
+    - Documentation:
+        - icon: fas fa-book
+          href: https://gethomepage.dev
+    - GitHub:
+        - icon: fab fa-github
+          href: https://github.com/gethomepage/homepage
+    - Docker Hub:
+        - icon: fab fa-docker
+          href: https://hub.docker.com
